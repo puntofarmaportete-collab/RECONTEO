@@ -3,23 +3,24 @@
 </style></head><body>
 <header class="top"><span class="brand">🟢 ORIFLAME · MUESTREO</span><div class="row"><span id="identity" class="small muted">Sin sesión</span><button id="logout" class="outline hidden">Salir</button></div></header>
 <main class="shell">
-<section id="login" class="panel login"><h1>Acceso seguro</h1><p class="muted">Muestreo de inventario · Proyecto independiente</p><form id="loginForm" class="form"><label>Correo electrónico<input id="email" type="email" autocomplete="username" required></label><label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label><button class="primary">Ingresar</button></form><p class="small muted">El administrador crea las cuentas en Firebase Authentication. No existe registro público.</p></section>
+<section id="login" class="panel login"><h1>Acceso seguro</h1><p class="muted">Muestreo de inventario · Proyecto independiente</p><form id="loginForm" class="form"><label>Usuario<input id="username" type="text" value="Kevin" autocomplete="username" autocapitalize="none" spellcheck="false" required placeholder="Ej. Kevin"></label><label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label><button class="primary">Ingresar</button></form><p class="small muted">Los usuarios se administran desde la web. Activación inicial: Kevin / 123 (solo una vez). Cambia esa clave al ingresar.</p><div class="row"><button id="firstSetup" type="button" class="outline">Activar administrador inicial</button></div><p id="setupMessage" class="small muted"></p></section>
 <section id="main" class="hidden">
 <div class="row spread"><div><h1 id="pageTitle">MUESTREO DE INVENTARIO</h1><div class="small muted" id="sampleTitle">Sin muestra activa</div></div><span id="connection" class="pill">Conectando...</span></div>
-<div id="admin" class="hidden"><nav class="tabs"><button class="tab active" data-tab="dashboard">📊 Panel</button><button class="tab" data-tab="import">📥 Cargar</button><button class="tab" data-tab="results">🔎 Resultados</button><button class="tab" data-tab="history">📚 Historial</button></nav>
+<div id="admin" class="hidden"><nav class="tabs"><button class="tab active" data-tab="dashboard">📊 Panel</button><button class="tab" data-tab="import">📥 Cargar</button><button class="tab" data-tab="results">🔎 Resultados</button><button class="tab" data-tab="history">📚 Historial</button><button class="tab" data-tab="users">👤 Usuarios</button></nav>
 <section data-view="dashboard" class="panel"><div class="stats" id="stats"></div><div class="toolbar"><h2>Control de ubicaciones</h2><input id="taskSearch" placeholder="Buscar ubicación o código" style="max-width:300px"></div><div id="adminTasks"></div></section>
 <section data-view="import" class="panel hidden"><h2>Nueva muestra</h2><p class="muted">Pega desde Excel: Ubicación | Código | Cantidad. Se admite tabulación o punto y coma. Debes cerrar la muestra activa antes de crear otra.</p><label>Nombre de la muestra<input id="sampleName" placeholder="Ej. Muestreo PL 11-11-2026"></label><label style="margin-top:12px">Datos WMS<textarea id="paste" placeholder="Ubicación&#9;Código&#9;Cantidad"></textarea></label><div class="row"><button id="validate" class="outline">Validar y detectar duplicados</button><button id="publish" class="primary" disabled>Publicar muestra</button></div><div id="importSummary" class="small muted"></div><div id="duplicates"></div></section>
 <section data-view="results" class="panel hidden"><div class="toolbar"><h2>Comparación de inventario</h2><div class="row"><select id="resultFilter"><option value="all">Todos</option><option value="diff">Con diferencia</option><option value="square">Cuadrados</option></select><button id="csv" class="outline">Descargar CSV</button></div></div><div class="tablewrap" id="resultTable"></div></section>
-<section data-view="history" class="panel hidden"><h2>Historial de muestreos</h2><div id="historyList"></div></section></div>
+<section data-view="history" class="panel hidden"><h2>Historial de muestreos</h2><div id="historyList"></div></section>
+<section data-view="users" class="panel hidden"><h2>Usuarios de la plataforma</h2><p class="small muted">Crea y desactiva cuentas sin salir de esta web. No se muestran correos al ingresar.</p><form id="createUserForm" class="form" style="max-width:520px"><div class="grid"><label>Usuario<input id="newUsername" required autocomplete="off" placeholder="Ej. Pedro"></label><label>Nombre<input id="newName" required autocomplete="off" placeholder="Ej. Pedro López"></label></div><div class="grid"><label>Contraseña inicial (mínimo 6)<input id="newPassword" type="password" minlength="6" autocomplete="new-password" required></label><label>Rol<select id="newRole"><option value="operator">Operario</option><option value="admin">Administrador</option></select></label></div><button class="primary" type="submit">Crear usuario</button></form><div id="userList" style="margin-top:15px"></div></section></div>
 <div id="operator" class="hidden"><div class="panel"><div class="toolbar"><h2>Ubicaciones disponibles</h2><input id="opSearch" placeholder="Buscar ubicación" style="max-width:280px"></div><div id="myWork"></div><div id="availableTasks"></div></div><div id="countPanel" class="panel hidden"><div class="row spread"><h2 id="countHeading">Conteo</h2><span id="draftStatus" class="badge pending">Sincronización pendiente</span></div><p class="small muted">Conteo ciego. Registra 0 cuando el código no está físicamente.</p><div id="countInputs" class="codes"></div><p id="progress" class="small muted"></p><button id="finish" class="primary footerbtn">Finalizar ubicación</button></div></div>
-</section></main><div id="toast" class="hidden"></div>
+</section></main><div id="forcePassword" class="hidden" style="position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:#092b2bd9;padding:15px"><section class="panel" style="width:min(440px,100%)"><h2>🔐 Cambia tu contraseña provisional</h2><p class="muted small">Por seguridad, la clave inicial 123 solo sirve para activar Kevin. Establece una contraseña nueva de al menos 6 caracteres.</p><form id="passwordChangeForm" class="form"><label>Nueva contraseña<input id="changedPassword" type="password" autocomplete="new-password" minlength="6" required></label><label>Repetir contraseña<input id="confirmedPassword" type="password" autocomplete="new-password" minlength="6" required></label><button class="primary">Guardar nueva contraseña</button></form></section></div><div id="toast" class="hidden"></div>
 <script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+import {initializeApp,deleteApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,createUserWithEmailAndPassword,updatePassword,deleteUser} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import {getFirestore,doc,getDoc,setDoc,collection,query,where,getDocs,onSnapshot,runTransaction,serverTimestamp,writeBatch} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 const config={apiKey:'AIzaSyCPvdqvmBjuEP0wnjg8xzcpcesiw8s3OOE',authDomain:'reconteo-98d89.firebaseapp.com',projectId:'reconteo-98d89',storageBucket:'reconteo-98d89.firebasestorage.app',messagingSenderId:'851454345902',appId:'1:851454345902:web:a08bb87e4fa1f58547e33f'};
 const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
-let me=null,userProfile=null,activeSample=null,tasks=[],expected={},counts={},history=[],view='dashboard',prepared=null,currentTask=null,unsubs=[];let toastTimer;
+let bootstrapping=false,users=[],me=null,userProfile=null,activeSample=null,tasks=[],expected={},counts={},history=[],view='dashboard',prepared=null,currentTask=null,unsubs=[];let toastTimer;
 function toast(s,bad=false){$('toast').textContent=s;$('toast').className=bad?'bad':'';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),4600)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function key(s){return encodeURIComponent(s).replace(/%/g,'_')}
@@ -31,10 +32,58 @@ function unsub(){unsubs.forEach(f=>f());unsubs=[]}
 function name(){return userProfile?.name||me?.email||'Operario'}
 function status(s){return ({available:'Disponible',in_progress:'En proceso',finalized:'Finalizada'})[s]||s}
 function labelTask(t){return '<span class="badge '+esc(t.status)+'">'+status(t.status)+'</span>'}
-$('loginForm').onsubmit=async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value)}catch(e){toast('No se pudo ingresar: '+e.code,true)}};
+// El nombre de usuario se transforma en un identificador interno de Firebase Auth.
+// Ningún correo real ni contraseña se almacena en Firestore o en HTML.
+const AUTH_SUFFIX='@usuarios.muestreo-oriflame.app';
+function usernameKey(x){const s=String(x||'').trim().toLowerCase();if(!/^[a-z0-9][a-z0-9._-]{2,31}$/.test(s))throw Error('Usuario: 3 a 32 caracteres (letras sin tildes, números, punto, guion o _).');return s}
+function internalEmail(x){return usernameKey(x)+AUTH_SUFFIX}
+function firebasePassword(x){return x==='123'?'muestreo-inicial:123':x}
+function isInitialPass(x){return x==='123'}
+$('loginForm').onsubmit=async e=>{e.preventDefault();try{const user=usernameKey($('username').value),pass=$('password').value;if(user!=='kevin'&&pass==='123')throw Error('La contraseña 123 es exclusiva de la activación inicial.');await signInWithEmailAndPassword(auth,internalEmail(user),firebasePassword(pass));}catch(e){toast('No se pudo ingresar: '+(e.message||e.code),true)}};
 $('logout').onclick=()=>signOut(auth);
-onAuthStateChanged(auth,async u=>{unsub();me=u;userProfile=null;activeSample=null;tasks=[];expected={};counts={};currentTask=null;if(!u){$('login').classList.remove('hidden');$('main').classList.add('hidden');$('logout').classList.add('hidden');$('identity').textContent='Sin sesión';return}try{let p=await getDoc(doc(db,'users',u.uid));if(!p.exists()||!p.data().active||!['admin','operator'].includes(p.data().role))throw Error('La cuenta no tiene un perfil activo. Crea users/'+u.uid+' en Firestore.');userProfile=p.data();$('identity').textContent=name();$('logout').classList.remove('hidden');$('login').classList.add('hidden');$('main').classList.remove('hidden');$('admin').classList.toggle('hidden',!isAdmin());$('operator').classList.toggle('hidden',isAdmin());listenMain()}catch(e){toast(e.message,true);await signOut(auth)}});
-function listenMain(){unsub();unsubs.push(onSnapshot(doc(db,'meta','current'),snap=>{const sid=snap.exists()?snap.data().sampleId:null;if(activeSample?.id!==sid){activeSample=sid?{id:sid}:null;watchSample(sid)}$('sampleTitle').textContent=sid?'Muestra activa: '+sid:'No hay muestra activa';$('connection').textContent='● Conectado';if(isAdmin())renderAdmin();else renderOperator()},e=>toast('Error de permisos: '+e.code,true)));if(isAdmin())loadHistory()}
+// Primera activación. Debe ejecutarse inmediatamente por el propietario; la habilitación
+// inicial de reglas NO es un mecanismo apto para un despliegue público desatendido.
+$('firstSetup').onclick=async()=>{
+ if(!confirm('Crear el PRIMER administrador Kevin con clave provisional 123. Debes hacerlo antes de compartir la URL y cambiar la contraseña inmediatamente. ¿Continuar?'))return;
+ const btn=$('firstSetup');btn.disabled=true;bootstrapping=true;
+ try{
+  const cred=await createUserWithEmailAndPassword(auth,internalEmail('Kevin'),firebasePassword('123'));
+  const batch=writeBatch(db);batch.set(doc(db,'users',cred.user.uid),{username:'kevin',name:'Kevin',role:'admin',active:true,mustChangePassword:true,createdAt:serverTimestamp()});
+  batch.set(doc(db,'meta','bootstrap'),{adminUid:cred.user.uid,createdAt:serverTimestamp()});
+  await batch.commit();$('setupMessage').textContent='Administrador activado.';bootstrapping=false;await enterSession(cred.user);
+ }catch(e){bootstrapping=false;toast('No se pudo activar: '+(e.message||e.code),true);if(auth.currentUser){try{await deleteUser(auth.currentUser)}catch{}await signOut(auth).catch(()=>{})}}
+ finally{btn.disabled=false}
+};
+async function enterSession(u){
+ unsub();me=u;userProfile=null;activeSample=null;tasks=[];expected={};counts={};currentTask=null;
+ if(!u){$('login').classList.remove('hidden');$('main').classList.add('hidden');$('logout').classList.add('hidden');$('forcePassword').classList.add('hidden');$('identity').textContent='Sin sesión';return}
+ try{let p=await getDoc(doc(db,'users',u.uid));if(!p.exists()||!p.data().active||!['admin','operator'].includes(p.data().role))throw Error('No existe un perfil activo para esta cuenta.');userProfile=p.data();$('identity').textContent=name();$('logout').classList.remove('hidden');$('login').classList.add('hidden');$('main').classList.remove('hidden');$('admin').classList.toggle('hidden',!isAdmin());$('operator').classList.toggle('hidden',isAdmin());$('forcePassword').classList.toggle('hidden',userProfile.mustChangePassword!==true);if(userProfile.mustChangePassword!==true)listenMain();
+ }catch(e){toast(e.message||e.code,true);await signOut(auth)}
+}
+onAuthStateChanged(auth,async u=>{if(!bootstrapping)await enterSession(u)});
+$('passwordChangeForm').onsubmit=async e=>{e.preventDefault();try{
+ const pass=$('changedPassword').value;if(pass!==$('confirmedPassword').value)throw Error('Las contraseñas no coinciden.');if(pass.length<6||pass==='123'||pass==='muestreo-inicial:123')throw Error('Usa una contraseña nueva de al menos 6 caracteres.');
+ await updatePassword(auth.currentUser,pass);
+ await setDoc(doc(db,'users',me.uid),{mustChangePassword:false},{merge:true});userProfile.mustChangePassword=false;$('forcePassword').classList.add('hidden');listenMain();toast('Contraseña actualizada.');
+ }catch(e){toast('No se pudo actualizar la contraseña: '+(e.message||e.code),true)}};
+// Administradores crean usuarios desde la web sin perder su propia sesión:
+// la cuenta nueva se crea en una instancia secundaria de Firebase Authentication.
+$('createUserForm').onsubmit=async e=>{e.preventDefault();if(!isAdmin())return;const submit=e.target.querySelector('button[type=submit]');submit.disabled=true;
+ let secondary=null,newUser=null;
+ try{
+  const username=usernameKey($('newUsername').value),name=norm($('newName').value),password=$('newPassword').value,role=$('newRole').value;
+  if(!name||password.length<6||password==='123'||!['operator','admin'].includes(role))throw Error('Revisa nombre, rol y contraseña (mínimo 6 caracteres).');
+  if(users.some(u=>u.username===username))throw Error('El nombre de usuario ya existe.');
+  secondary=initializeApp(config,'alta-'+Date.now());const secondAuth=getAuth(secondary);
+  const result=await createUserWithEmailAndPassword(secondAuth,internalEmail(username),password);newUser=result.user;
+  await setDoc(doc(db,'users',result.user.uid),{username,name,role,active:true,mustChangePassword:false,createdAt:serverTimestamp()});
+  await signOut(secondAuth);$('createUserForm').reset();toast('Usuario creado: '+username);await loadUsers();
+ }catch(e){if(newUser){try{await deleteUser(newUser)}catch{}}toast('Error al crear usuario: '+(e.message||e.code),true)}
+ finally{if(secondary)await deleteApp(secondary).catch(()=>{});submit.disabled=false}
+};
+async function loadUsers(){if(!isAdmin())return;try{const snap=await getDocs(collection(db,'users'));users=snap.docs.map(d=>({uid:d.id,...d.data()}));$('userList').innerHTML=users.sort((a,b)=>a.username.localeCompare(b.username)).map(u=>'<div class="task row spread"><div><strong>'+esc(u.name)+'</strong><p class="small muted">@'+esc(u.username)+' · '+(u.role==='admin'?'Administrador':'Operario')+' · '+(u.active?'Activo':'Inactivo')+'</p></div>'+(u.uid===me.uid?'<span class="badge">Tu cuenta</span>':'<button class="outline" data-user="'+esc(u.uid)+'">'+(u.active?'Desactivar':'Activar')+'</button>')+'</div>').join('')}catch(e){toast('Usuarios: '+(e.message||e.code),true)}}
+$('userList').onclick=async e=>{const b=e.target.closest('[data-user]');if(!b)return;const u=users.find(x=>x.uid===b.dataset.user);if(!u||u.uid===me.uid)return;if(!confirm((u.active?'¿Desactivar':'¿Activar')+' a '+u.username+'?'))return;try{await setDoc(doc(db,'users',u.uid),{active:!u.active},{merge:true});await loadUsers()}catch(e){toast(e.message||e.code,true)}};
+function listenMain(){unsub();unsubs.push(onSnapshot(doc(db,'meta','current'),snap=>{const sid=snap.exists()?snap.data().sampleId:null;if(activeSample?.id!==sid){activeSample=sid?{id:sid}:null;watchSample(sid)}$('sampleTitle').textContent=sid?'Muestra activa: '+sid:'No hay muestra activa';$('connection').textContent='● Conectado';if(isAdmin())renderAdmin();else renderOperator()},e=>toast('Error de permisos: '+e.code,true)));if(isAdmin()){loadHistory();loadUsers()}}
 function watchSample(sid){unsub(); // reattach meta listener after resetting inner listeners, without duplicating it
 unsubs.push(onSnapshot(doc(db,'meta','current'),s=>{const next=s.exists()?s.data().sampleId:null;if(next!==activeSample?.id){activeSample=next?{id:next}:null;watchSample(next)}$('sampleTitle').textContent=next?'Muestra activa: '+next:'No hay muestra activa';$('connection').textContent='● Conectado';render()},e=>toast(e.code,true)));
  tasks=[];expected={};counts={};currentTask=null;if(!sid){render();return}const root=doc(db,'samples',sid);unsubs.push(onSnapshot(root,s=>{if(s.exists())activeSample={id:sid,...s.data()};render()},e=>toast(e.code,true)));unsubs.push(onSnapshot(collection(db,'samples',sid,'tasks'),s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>toast('Error tareas: '+e.code,true)));if(isAdmin()){unsubs.push(onSnapshot(collection(db,'samples',sid,'expected'),s=>{expected=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));render()},e=>toast(e.code,true)));unsubs.push(onSnapshot(collection(db,'samples',sid,'counts'),s=>{counts=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));render()},e=>toast(e.code,true)))} }
